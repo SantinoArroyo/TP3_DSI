@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ConstruMateriales - Tu proveedor de confianza</title>
+    <link rel="stylesheet" href="/styles/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+        integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+
+<body>
+
+    <header>
+        <div class="header-content">
+            <i class="fas fa-tools"></i>
+            <h1>ConstruMateriales</h1>
+            <p>Tu proveedor de confianza para la construcción</p>
+        </div>
+    </header>
+
+    <nav>
+        <ul>
+            <li><a href="index.html"><i class="fas fa-home"></i> Inicio</a></li>
+            <li><a href="/html/inicio.html"><i class="fas fa-user-plus"></i> Inicio de Sesión</a></li>
+            <li><a href="html/cotizaciones.html"><i class="fas fa-file-invoice-dollar"></i> Cotizaciones</a></li>
+            <li><a href="#" id="carrito-link"><i class="fas fa-shopping-cart"></i> Carrito <span
+                        id="carrito-cantidad">0</span></a></li>
+        </ul>
+    </nav>
+
+    <section class="search-filter">
+        <input type="text" id="busqueda" placeholder="Buscar por nombre...">
+        <select id="filtro">
+            <option value="">Todos los tipos</option>
+            <option value="ladrillos">Ladrillos</option>
+            <option value="vigas">Vigas</option>
+            <option value="cemento">Cemento</option>
+            <option value="arena">Arena</option>
+        </select>
+    </section>
+
+    <main>
+        <div class="product-container">
+
+        </div>
+    </main>
+
+    <aside id="carrito" class="hidden">
+        <h2>Carrito de Compras</h2>
+        <ul id="carrito-items">
+
+        </ul>
+        <p id="carrito-total">Total: $0.00</p>
+        <button id="comprar-button">Comprar</button>
+    </aside>
+
+    <script>
+        const productos = [{
+                nombre: "Ladrillo Hueco 12x18x33cm 9 tubos",
+                precio: 390.00,
+                imagen: "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.sodimac.com.ar%2Fsodimac-ar%2Fproduct%2F1157913%2FLadrillo-hueco-ceramico-portante-12x18x33-9-agujeros-paletizado-x-504-unidades%2F1157913&psig=AOvVaw00K_r9a_1x4aF-uZ978R4V&ust=1697723392053000&source=images&cd=vfe&opi=89978449&ved=0CBEQjRxqFwoTCJiwv9Oow4IDFQAAAAAdAAAAABAE",
+                descripcion: "Ladrillo hueco cerámico 12x18x33 cm 9 tubos. Ideal para tabiques divisorios y cerramientos (ambientes interiores y muros de cierre).",
+                tipo: "ladrillos"
+            },
+            {
+                nombre: "Viga 4 mts",
+                precio: 10619.00,
+                imagen: "https://www.google.com/url?sa=i&url=https%3A%2F%2Flistado.mercadolibre.com.ar%2Fviga-de-hormigon-4-metros&psig=AOvVaw1bQp50w82x9tM810_t871J&ust=1697723467672000&source=images&cd=vfe&opi=89978449&ved=0CBEQjRxqFwoTCLjP0bOow4IDFQAAAAAdAAAAABAE",
+                descripcion: "Viga de hormigón pretensado de 4 metros. Ideal para techos y estructuras de construcción.",
+                tipo: "vigas"
+            },
+            {
+                nombre: "Cemento Portland 50kg",
+                precio: 1200.00,
+                imagen: "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.easy.com.ar%2Fwebapp%2Fwcs%2Fstores%2Fservlet%2FProductDisplay%3FstoreId%3D10151%26catalogId%3D10051%26productId%3D2800550%26langId%3D-11&psig=AOvVaw0x8m_a845O3hE0v_s2f1kO&ust=1697723592520000&source=images&cd=vfe&opi=89978449&ved=0CBEQjRxqFwoTCPDyq6Ssw4IDFQAAAAAdAAAAABAE",
+                descripcion: "Cemento Portland de alta resistencia para todo tipo de obras.",
+                tipo: "cemento"
+            },
+            {
+                nombre: "Arena Silica 50kg",
+                precio: 600.00,
+                imagen: "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.homedepot.com.mx%2Farena-silica-extra-fina-50-kg-200312%2F100551143&psig=AOvVaw1Zc9-r52Y8mN9l60-o_o0H&ust=1697723660381000&source=images&cd=vfe&opi=89978449&ved=0CBEQjRxqFwoTCPDL97Gtw4IDFQAAAAAdAAAAABAE",
+                descripcion: "Arena fina para la preparación de morteros y revoques.",
+                tipo: "arena"
+            },
+            {
+                nombre: "Varilla de acero 1/2\"",
+                precio: 850.00,
+                imagen: "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.construrama.com%2Fproducto%2Fvarilla-corrugada-de-acero-grado-42-1-2-pulgada-6-m&psig=AOvVaw3p0h_m6G00Jq5j0oS2N3z3&ust=1697725242284000&source=images&cd=vfe&opi=89978449&ved=0CBEQjRxqFwoTCKiU2c21w4IDFQAAAAAdAAAAABAE",
+                descripcion: "Varilla de acero corrugado para refuerzo de hormigón.",
+                tipo: "acero"
+            },
+            {
+                nombre: "Bloque de Hormigón 15x20x40",
+                precio: 250.00,
+                imagen: "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.hipermateriales.com.ar%2Fproducto%2Fbloque-de-hormigon-15x20x40-gris%2F&psig=AOvVaw195q7x-w9L2-B1zG_1F63k&ust=1697727096147000&source=images&cd=vfe&opi=89978449&ved=0CBEQjRxqFwoTCID139a4w4IDFQAAAAAdAAAAABAI",
+                descripcion: "Bloque de hormigón para la construcción de muros.",
+                tipo: "bloques"
+            },
+            {
+                nombre: "Cal Hidratada 25kg",
+                precio: 450.00,
+                imagen: "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.sodimac.com.ar%2Fsodimac-ar%2Fproduct%2F544254%2FCal-hidratada-bolsa-25kg-Cementos-Avellaneda%2F544254&psig=AOvVaw26Xq-T7xPq6oK30l6e0y_i&ust=1697727161230000&source=images&cd=vfe&opi=89978449&ved=0CBEQjRxqFwoTCPDd6tW4w4IDFQAAAAAdAAAAABAI",
+                descripcion: "Cal hidratada para morteros y revoques.",
+                tipo: "cal"
+            },
+            {
+                nombre: "Placa de Yeso 1.20x2.40",
+                precio: 1800.00,
+                imagen: "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.easy.com.ar%2Fwebapp%2Fwcs%2Fstores%2Fservlet%2FProductDisplay%3FstoreId%3D10151%26catalogId%3D10051%26productId%3D2060046%26langId%3D-11&psig=AOvVaw0pL5-gG6F4Iu0t3Y28p9_t&ust=1697727221514000&source=images&cd=vfe&opi=89978449&ved=0CBEQjRxqFwoTCOi997e4w4IDFQAAAAAdAAAAABAI",
+                descripcion: "Placa de yeso para revestimientos interiores.",
+                tipo: "yeso"
+            }
+        ];
+
+        const productContainer = document.querySelector('.product-container');
+        const carritoItems = document.getElementById('carrito-items');
+        const carritoCantidad = document.getElementById('carrito-cantidad');
+        const carritoTotal = document.getElementById('carrito-total');
+        const carrito = document.getElementById('carrito');
+        const carritoLink = document.getElementById('carrito-link');
+        const comprarButton = document.getElementById('comprar-button');
+        let carritoArray = [];
+
+        function mostrarProductos(productosAMostrar) {
+            productContainer.innerHTML = '';
+
+            productosAMostrar.forEach(producto => {
+                const productDiv = document.createElement('div');
+                productDiv.classList.add('product');
+
+
+                const img = document.createElement('img');
+                img.src = producto.imagen;
+                img.alt = producto.nombre;
+                productDiv.appendChild(img);
+
+
+                const infoDiv = document.createElement('div');
+                infoDiv.classList.add('product-info');
+
+                const title = document.createElement('h2');
+                title.classList.add('product-title');
+                title.textContent = producto.nombre;
+                infoDiv.appendChild(title);
+
+                const price = document.createElement('p');
+                price.classList.add('product-price');
+                price.textContent = `$${producto.precio.toFixed(2)}`;
+                infoDiv.appendChild(price);
+
+                const description = document.createElement('p');
+                description.classList.add('product-description');
+                description.textContent = producto.descripcion;
+                infoDiv.appendChild(description);
+
+
+                const cantidadInput = document.createElement('input');
+                cantidadInput.type = 'number';
+                cantidadInput.min = '1';
+                cantidadInput.value = '1';
+                cantidadInput.classList.add('cantidad-input');
+                infoDiv.appendChild(cantidadInput);
+
+                const agregarButton = document.createElement('button');
+                agregarButton.textContent = 'Agregar al Carrito';
+                agregarButton.addEventListener('click', () => {
+                    const cantidad = parseInt(cantidadInput.value);
+                    agregarAlCarrito(producto, cantidad);
+                });
+                infoDiv.appendChild(agregarButton);
+
+                productDiv.appendChild(infoDiv);
+
+                productContainer.appendChild(productDiv);
+            });
+        }
+
+
+        function agregarAlCarrito(producto, cantidad) {
+
+            const productoExistente = carritoArray.find(item => item.producto.nombre === producto.nombre);
+
+            if (productoExistente) {
+
+                productoExistente.cantidad += cantidad;
+            } else {
+
+                carritoArray.push({
+                    producto: producto,
+                    cantidad: cantidad
+                });
+            }
+
+            localStorage.setItem('carrito', JSON.stringify(carritoArray));
+            actualizarCarrito();
+            mostrarCarrito();
+        }
+
+
+        function actualizarCarrito() {
+            carritoItems.innerHTML = '';
+            let total = 0;
+
+            carritoArray.forEach(item => {
+                const li = document.createElement('li');
+                li.textContent =
+                    `${item.producto.nombre} x ${item.cantidad} - $${(item.producto.precio * item.cantidad).toFixed(2)}`;
+                carritoItems.appendChild(li);
+                total += item.producto.precio * item.cantidad;
+            });
+
+            carritoCantidad.textContent = carritoArray.reduce((acc, item) => acc + item.cantidad, 0);
+            carritoTotal.textContent = `Total: $${total.toFixed(2)}`;
+        }
+
+
+        function mostrarCarrito() {
+            carrito.classList.remove('hidden');
+        }
+
+
+        function ocultarCarrito() {
+            carrito.classList.add('hidden');
+        }
+
+
+        carritoLink.addEventListener('click', (event) => {
+            event.preventDefault();
+            if (carrito.classList.contains('hidden')) {
+                mostrarCarrito();
+            } else {
+                ocultarCarrito();
+            }
+        });
+
+
+        comprarButton.addEventListener('click', () => {
+            window.location.href = 'html/carrito.html';
+        });
+
+
+        mostrarProductos(productos);
+    </script>
+
+
+</body>
+
+</html>

@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ConstruMateriales - Registro de Usuario</title>
+    <link rel="stylesheet" href="/styles/style.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="password"],
+        input[type="date"],
+        input[type="tel"] {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .form-footer {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .form-footer a {
+            color: #4CAF50;
+            text-decoration: none;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <button onclick="history.back()">Volver</button>
+        <h2>Registro de Usuario</h2>
+        <form id="form-registro" action="#" method="POST">
+            <label for="nombre">Nombre Completo</label>
+            <input type="text" id="nombre" name="nombre" placeholder="Ingresa tu nombre completo" required>
+
+            <label for="email">Correo Electrónico</label>
+            <input type="email" id="email" name="email" placeholder="Ingresa tu correo electrónico" required>
+
+            <label for="email">Provincia</label>
+            <input type="email" id="email" name="email" placeholder="Ingresa tu Provincia" required>
+
+            <label for="email">Ciudad</label>
+            <input type="email" id="email" name="email" placeholder="Ingresa tu Ciudad" required>
+
+            <label for="email">Codigo Postal</label>
+            <input type="email" id="email" name="email" placeholder="Ingresa tu Codigo Postal" required>
+
+            <label for="email">Calle</label>
+            <input type="email" id="email" name="email" placeholder="Ingresa tu Calle" required>
+
+            <label for="email">Número de Calle</label>
+            <input type="email" id="email" name="email" placeholder="Ingresa tu Número de Calle" required>
+
+            <label for="telefono">Teléfono</label>
+            <input type="tel" id="telefono" name="telefono" placeholder="Ingresa tu número de teléfono" required>
+
+            <label for="fecha-nacimiento">Fecha de Nacimiento</label>
+            <input type="date" id="fecha-nacimiento" name="fecha-nacimiento" required>
+
+            <label for="password">Contraseña</label>
+            <input type="password" id="password" name="password" placeholder="Crea una contraseña" required>
+
+            <label for="confirm-password">Confirmar Contraseña</label>
+            <input type="password" id="confirm-password" name="confirm-password" placeholder="Repite la contraseña" required>
+
+            <button type="submit">Registrarse</button>
+        </form>
+
+        <div class="form-footer">
+            <p>¿Ya tienes una cuenta? <a href="/html/inicio.html">Inicia sesión aquí</a></p>
+        </div>
+    </div>
+
+
+</body>
+
+
+
+</html>

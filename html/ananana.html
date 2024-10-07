@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ConstruMateriales - Cotizaciones</title>
+    <link rel="stylesheet" href="/styles/style.css"> </head>
+<body>
+    <header>
+        <div class="header-content">
+            <h1>ConstruMateriales</h1>
+            <p>Tu proveedor de confianza para la construcción</p>
+        </div>
+        <button onclick="history.back()">Volver</button>
+    </header>
+
+    <main>
+        <div class="container">
+            <h2>Cotizaciones</h2>
+
+            <div id="cotizaciones-container">
+                </div>
+
+            <button id="agregar-cotizacion">Agregar Cotización</button>
+
+            <div class="totales-generales hidden" id="totales">
+                <h3>Totales Generales</h3>
+                <p>Precio final: <span id="precio-final">$0.00</span></p>
+                <p>Descuento total: <span id="descuento-total">$0.00</span></p>
+                <p>Precio total con descuento: <span id="precio-total">$0.00</span></p>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        const cotizacionesContainer = document.getElementById('cotizaciones-container');
+        const agregarCotizacionButton = document.getElementById('agregar-cotizacion');
+        const totalesGeneralesDiv = document.getElementById('totales');
+        const precioFinalSpan = document.getElementById('precio-final');
+        const descuentoTotalSpan = document.getElementById('descuento-total');
+        const precioTotalSpan = document.getElementById('precio-total');
+
+        const catalogoMateriales = {
+            'ladrillo-bloque': { 
+                nombre: "Ladrillo tipo bloque (18cm x 33cm)",
+                precio: 390, 
+                cantidadPorPallet: 144, 
+                unidad: 'ladrillos',
+                calcularCantidad: (largo, alto, ancho) => Math.ceil((largo * alto * ancho) / (0.18 * 0.33)) 
+            },
+            'viga-4m': { 
+                nombre: "Viga de 4 metros",
+                precio: 10619, 
+                cantidadPorPallet: 1, 
+                unidad: 'vigas',
+                calcularCantidad: (largo, alto, ancho) => Math.ceil(largo / 4) 
+            },
+            // Agrega más materiales aquí...
+        };
+
+        let cotizaciones = [];
+
+        function agregarCotizacion() {
+            const cotizacionDiv = document.createElement('div');
+            cotizacionDiv.classList.add('cotizacion');
+            cotizacionDiv.innerHTML = `
+                <h3>Cotización Individual</h3>
+                <label for="material">Material:</label>
+                <select id="material">
+                    ${Object.entries(catalogoMateriales).map(([value, material]) => `
+                        <option value="${value}">${material.nombre}</option>
+                    `).join('')}
+                </select>
+                <label for="largo">Largo (metros):</label>
+                <input type="number" id="largo" min="0" step="0.01" required>
+                <label for="alto">Alto (metros):</label>
+                <input type="number" id="alto" min="0" step="0.01" required>
+                <label for="ancho">Ancho (metros):</label>
+                <input type="number" id="ancho" min="0" step="0.01" required>
+                <button class="calcular-btn">Calcular</button>
+                <div class="resultados hidden">
+                    <p>Cantidad: <span class="cantidad"></span> <span class="unidad"></span></p>
+                    <p>Pallets: <span class="pallets"></span></p>
+                    <p>Precio total: <span class="precio-total"></span></p>
+                    <p>Descuento: <span class="descuento"></span></p>
+                </div>
+            `;
+
+            cotizacionesContainer.appendChild(cotizacionDiv);
+
+            
+            const calcularBtn = cotizacionDiv.querySelector('.calcular-btn');
+            calcularBtn.addEventListener('click', () => {
+                calcularCotizacionIndividual(cotizacionDiv);
+            });
+        }
+
+        function calcularCotizacionIndividual(cotizacionDiv) {
+            const materialSelect = cotizacionDiv.querySelector('#material');
+            const largoInput = cotizacionDiv.querySelector('#largo');
+            const altoInput = cotizacionDiv.querySelector('#alto');
+            const anchoInput = cotizacionDiv.querySelector('#ancho');
+            const resultadosDiv = cotizacionDiv.querySelector('.resultados');
+            const cantidadSpan = resultadosDiv.querySelector('.cantidad');
+            const unidadSpan = resultadosDiv.querySelector('.unidad');
+            const palletsSpan = resultadosDiv.querySelector('.pallets');
+            const precioTotalSpan = resultadosDiv.querySelector('.precio-total');
+            const descuentoSpan = resultadosDiv.querySelector('.descuento');
+
+            const materialSeleccionado = catalogoMateriales[materialSelect.value];
+
+            const largo = parseFloat(largoInput.value);
+            const alto = parseFloat(altoInput.value);
+            const ancho = parseFloat(anchoInput.value);
+            const cantidad = materialSeleccionado.calcularCantidad(largo, alto, ancho);
+            const pallets = Math.ceil(cantidad / materialSeleccionado.cantidadPorPallet);
+            const precioTotal = cantidad * materialSeleccionado.precio;
+            let descuento = 0;
+
+            if (precioTotal >= 10000) {
+                descuento = precioTotal * 0.05;
+            }
+
+            cantidadSpan.textContent = cantidad;
+            unidadSpan.textContent = materialSeleccionado.unidad;
+            palletsSpan.textContent = pallets;
+            precioTotalSpan.textContent = `$${precioTotal.toFixed(2)}`;
+            descuentoSpan.textContent = `$${descuento.toFixed(2)}`;
+
+            resultadosDiv.classList.remove('hidden');
+
+            
+            cotizaciones.push({ precioTotal, descuento });
+            actualizarTotalesGenerales();
+        }
+
+        function actualizarTotalesGenerales() {
+            let precioFinal = 0;
+            let descuentoTotal = 0;
+
+            cotizaciones.forEach(cotizacion => {
+                precioFinal += cotizacion.precioTotal;
+                descuentoTotal += cotizacion.descuento;
+            });
+
+            precioFinalSpan.textContent = `$${precioFinal.toFixed(2)}`;
+            descuentoTotalSpan.textContent = `$${descuentoTotal.toFixed(2)}`;
+            precioTotalSpan.textContent = `$${(precioFinal - descuentoTotal).toFixed(2)}`;
+
+            totalesGeneralesDiv.classList.remove('hidden');
+        }
+
+        agregarCotizacionButton.addEventListener('click', agregarCotizacion);
+    </script>
+    
+</body>
+</html>

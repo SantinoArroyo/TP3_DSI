@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ConstruMateriales - Carrito de Compras</title>
+    <link rel="stylesheet" href="/styles/style.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: auto;
+            padding: 20px;
+        }
+
+        .carrito-content {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .carrito-items,
+        .carrito-resumen {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 10%;
+            align-items: center;
+        }
+
+        .metodo-pago label {
+            cursor: pointer;
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        .datos-pago {
+            margin-top: 10px;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        input[type="text"],
+        input[type="number"] {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        #comprar-button {
+            width: auto; /* Ajusta el ancho del botón */
+            padding: 10px 20px; /* Ajusta el padding del botón */
+        }
+
+        /* Estilos para el botón "Vaciar Carrito" */
+        #vaciar-carrito {
+            background-color: #f44336; /* Color rojo para el botón */
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-bottom: 10px; /* Espacio inferior */
+        }
+
+        #vaciar-carrito:hover {
+            background-color: #d32f2f; /* Color rojo más oscuro al pasar el mouse */
+        }
+
+        #direccion-envio {
+            margin-top: 20px;
+            border: 1px solid #ccc; /* Agregar un borde */
+            padding: 15px; /* Agregar padding */
+            border-radius: 5px; /* Agregar bordes redondeados */
+        }
+
+        #direccion-envio select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #fff; /* Color de fondo blanco */
+        }
+
+        #nueva-direccion {
+            display: none;
+            margin-top: 10px;
+        }
+
+        #nueva-direccion input {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        #direccion-envio h3 {
+            margin-bottom: 10px; /* Espacio inferior para el título */
+            margin-left: 10px;
+        }
+
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <div class="header-content">
+            <h1>ConstruMateriales</h1>
+            <p>Tu proveedor de confianza para la construcción</p>
+        </div>
+        <button onclick="history.back()">Volver</button>
+    </header>
+
+    <main>
+        <div class="container">
+            <h2>Carrito de Compras</h2>
+
+            <div class="carrito-content">
+                <div class="carrito-items">
+                    <h3>Artículos en tu carrito</h3>
+                    <ul id="carrito-items-list">
+                        <!-- Los elementos del carrito se agregarán aquí -->
+                    </ul>
+
+                    <button id="vaciar-carrito">Vaciar Carrito</button> </div>
+
+                <div class="carrito-resumen">
+                    <h3>Resumen del Pedido</h3>
+                    <p>Subtotal: <span id="subtotal">$0.00</span></p>
+                    <p>Descuento: <span id="descuento">$0.00</span></p>
+                    <p>Total: <span id="total">$0.00</span></p>
+                </div>
+
+                <h3>Dirección de Envío</h3>
+                    <div id="direccion-envio">
+                        <select id="seleccionar-direccion">
+                            <option value="direccion-cliente">Dirección 1 (ejemplo)</option>
+                            <option value="nueva-direccion">Ingresar una nueva dirección</option>
+                        </select>
+                        <div id="nueva-direccion">
+                            <input type="text" id="calle" placeholder="Calle">
+                            <input type="text" id="numero" placeholder="Número">
+                            <input type="text" id="ciudad" placeholder="Ciudad">
+                            <input type="text" id="codigo-postal" placeholder="Código Postal">
+                        </div>
+                    </div>
+
+                    <button id="comprar-button">Finalizar Compra</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        const carritoItemsList = document.getElementById('carrito-items-list');
+        const subtotalSpan = document.getElementById('subtotal');
+        const descuentoSpan = document.getElementById('descuento');
+        const totalSpan = document.getElementById('total');
+        const comprarButton = document.getElementById('comprar-button');
+        const metodosPagoDiv = document.getElementById('metodos-pago');
+
+        let carritoArray = JSON.parse(localStorage.getItem('carrito')) || [];
+        let metodoPagoSeleccionado = localStorage.getItem('metodoPago') || null;
+
+        function actualizarCarrito() {
+            carritoItemsList.innerHTML = '';
+            let subtotal = 0;
+            let descuento = 0;
+
+            carritoArray.forEach(item => {
+                const li = document.createElement('li');
+                li.innerHTML = `
+                    <div class="carrito-item">
+                        <img src="${item.producto.imagen}" alt="${item.producto.nombre}">
+                        <div class="carrito-item-info">
+                            <h3>${item.producto.nombre}</h3>
+                            <p>Cantidad: ${item.cantidad}</p>
+                            <p>Precio unitario: $${item.producto.precio.toFixed(2)}</p>
+                        </div>
+                    </div>
+                `;
+                carritoItemsList.appendChild(li);
+                subtotal += item.producto.precio * item.cantidad;
+            });
+
+            if (subtotal > 2000) {
+                descuento = subtotal * 0.05;
+            }
+
+            const total = subtotal - descuento;
+
+            subtotalSpan.textContent = `$${subtotal.toFixed(2)}`;
+            descuentoSpan.textContent = `$${descuento.toFixed(2)}`;
+            totalSpan.textContent = `$${total.toFixed(2)}`;
+        }
+;
+
+        comprarButton.addEventListener('click', () => {
+            if (metodoPagoSeleccionado) {
+                alert("Gracias por tu compra!");
+                localStorage.removeItem('carrito');
+                carritoArray = [];
+                actualizarCarrito();
+            } else {
+                alert('Por favor selecciona un método de pago');
+            }
+        });
+
+        
+        const vaciarCarritoButton = document.getElementById('vaciar-carrito');
+        vaciarCarritoButton.addEventListener('click', () => {
+            carritoArray = []; 
+            localStorage.removeItem('carrito'); 
+            actualizarCarrito(); 
+        });
+
+        actualizarCarrito();
+
+        const seleccionarDireccionSelect = document.getElementById('seleccionar-direccion');
+        const nuevaDireccionDiv = document.getElementById('nueva-direccion');
+
+        seleccionarDireccionSelect.addEventListener('change', () => {
+            if (seleccionarDireccionSelect.value === 'nueva-direccion') {
+                nuevaDireccionDiv.style.display = 'block'; 
+            } else {
+                nuevaDireccionDiv.style.display = 'none';
+            }
+        });
+
+    </script>
+
+    
+</body>
+
+</html>

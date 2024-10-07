@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ConstruMateriales - Cotizaciones</title>
+    <link rel="stylesheet" href="/styles/style.css">
+    <style>
+        /* Estilos generales */
+        body {
+          font-family: sans-serif;
+          margin: 0;
+          padding: 0;
+          background-color: #f4f4f4;
+          color: #333;
+        }
+        
+        .container {
+          max-width: 800px;
+          margin: 20px auto;
+          padding: 20px;
+          background-color: #fff;
+          border-radius: 5px;
+          box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        
+        h2, h3 {
+          color: #3498db; 
+        }
+        
+        /* Estilos para el formulario */
+        .cotizador-form {
+          margin-bottom: 20px;
+        }
+        
+        .form-group {
+          margin-bottom: 15px;
+        }
+        
+        label {
+          display: block;
+          margin-bottom: 5px;
+        }
+        
+        input[type="number"], 
+        select {
+          width: 100%;
+          padding: 8px;
+          border: 1px solid #ccc;
+          border-radius: 3px;
+          box-sizing: border-box;
+        }
+        
+        /* Estilos para la lista desplegable de materiales */
+        #materiales {
+          width: 100%; 
+          padding: 8px;
+          border: 1px solid #ccc;
+          border-radius: 3px;
+          box-sizing: border-box;
+          appearance: none; /* Personaliza la apariencia del select */
+          background-color: #fff; 
+          overflow-y: auto; 
+          height: 100px; 
+        }
+        
+        /* Estilos para la tabla de cotizaciones */
+        .cotizacion table {
+          width: 100%;
+          border-collapse: collapse; 
+          margin-bottom: 20px;
+        }
+        
+        .cotizacion th, .cotizacion td {
+          text-align: left;
+          padding: 8px;
+          border-bottom: 1px solid #eee; 
+        }
+        
+        .cotizacion th {
+          background-color: #f0f0f0; 
+          font-weight: bold;
+        }
+        
+        /* Estilos para los botones */
+        button {
+          background-color: #3498db;
+          color: #fff;
+          border: none;
+          padding: 10px 15px;
+          border-radius: 3px;
+          cursor: pointer;
+          transition: background-color 0.3s ease;
+        }
+        
+        button:hover {
+          background-color: #2980b9;
+        }
+      </style>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <h1>ConstruMateriales</h1>
+            <p>Tu proveedor de confianza para la construcción</p>
+        </div>
+        <button onclick="history.back()">Volver</button>
+    </header>
+
+    <main>
+        <div class="container">
+            <h2>Cotizador de Materiales</h2>
+            <div class="cotizador-form">
+                <div class="form-group">
+                    <label for="metros-cuadrados">Metros cuadrados:</label>
+                    <input type="number" id="metros-cuadrados" min="1" required>
+                </div>
+                <fieldset class="form-group">
+                    <legend>Materiales:</legend>
+                    <div id="materiales-checkbox">
+                        <!-- Los checkboxes de materiales se agregarán aquí -->
+                    </div>
+                    <h2>Luego se colocarán más materiales en la lista</h2>
+                </fieldset>
+                <button id="calcular-cotizacion">Calcular Cotización</button>
+            </div>
+            <div class="cotizacion hidden" id="cotizacion-resultado">
+                <h3>Cotización</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Cantidad</th>
+                            <th>Nombre del artículo</th>
+                            <th>Pallets</th>
+                            <th>Precio total</th>
+                        </tr>
+                    </thead>
+                    <tbody id="cotizacion-items">
+                        <!-- Aquí se listarán los materiales y cantidades -->
+                    </tbody>
+                </table>
+                <button id="agregar-al-carrito">Agregar al Carrito</button>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        const metrosCuadradosInput = document.getElementById('metros-cuadrados');
+        const materialesCheckboxDiv = document.getElementById('materiales-checkbox');
+        const calcularButton = document.getElementById('calcular-cotizacion');
+        const cotizacionResultadoDiv = document.getElementById('cotizacion-resultado');
+        const cotizacionItemsTable = document.getElementById('cotizacion-items');
+        const agregarAlCarritoButton = document.getElementById('agregar-al-carrito');
+
+        const catalogoMateriales = {
+            'ladrillo-bloque': {
+                nombre: "Ladrillo tipo bloque (18cm x 33cm)",
+                precio: 390,
+                cantidadPorPallet: 144,
+                cantidadPorMetroCuadrado: 5 // Asumiendo 5 ladrillos por m2
+            },
+            'viga-4m': {
+                nombre: "Viga de 4 metros",
+                precio: 10619,
+                cantidadPorPallet: 1, 
+                cantidadPorMetroCuadrado: 0.25 
+            },
+            
+        };
+
+        
+        for (const materialId in catalogoMateriales) {
+            const material = catalogoMateriales[materialId];
+            const checkboxDiv = document.createElement('div');
+            checkboxDiv.innerHTML = `
+                <input type="checkbox" id="${materialId}" value="${materialId}">
+                <label for="${materialId}">${material.nombre}</label>
+            `;
+            materialesCheckboxDiv.appendChild(checkboxDiv);
+        }
+
+        calcularButton.addEventListener('click', () => {
+            const metrosCuadrados = parseFloat(metrosCuadradosInput.value);
+            const materialesSeleccionados = Array.from(document.querySelectorAll('#materiales-checkbox input:checked'))
+                .map(checkbox => checkbox.value);
+
+            const cotizacion = calcularMateriales(metrosCuadrados, materialesSeleccionados);
+            mostrarCotizacion(cotizacion);
+        });
+
+        agregarAlCarritoButton.addEventListener('click', () => {
+            const cotizacion = obtenerCotizacionActual();
+            agregarAlCarrito(cotizacion);
+        });
+
+        function calcularMateriales(metrosCuadrados, materialesSeleccionados) {
+            const cotizacion = {};
+
+            materialesSeleccionados.forEach(materialId => {
+                const material = catalogoMateriales[materialId];
+                const cantidad = Math.ceil(metrosCuadrados * material.cantidadPorMetroCuadrado);
+                const pallets = Math.ceil(cantidad / material.cantidadPorPallet);
+                cotizacion[materialId] = {
+                    cantidad: cantidad,
+                    pallets: pallets,
+                    precioTotal: cantidad * material.precio
+                };
+            });
+
+            return cotizacion;
+        }
+
+        function mostrarCotizacion(cotizacion) {
+            cotizacionItemsTable.innerHTML = ''; 
+
+            for (const materialId in cotizacion) {
+                const { cantidad, pallets, precioTotal } = cotizacion[materialId];
+                const material = catalogoMateriales[materialId];
+
+                const row = cotizacionItemsTable.insertRow();
+                const cantidadCell = row.insertCell();
+                const nombreCell = row.insertCell();
+                const palletsCell = row.insertCell();
+                const precioCell = row.insertCell();
+
+                cantidadCell.textContent = cantidad;
+                nombreCell.textContent = material.nombre;
+                palletsCell.textContent = pallets; 
+                precioCell.textContent = `$${precioTotal.toFixed(2)}`;
+            }
+
+            cotizacionResultadoDiv.classList.remove('hidden');
+        }
+
+        function obtenerCotizacionActual() {
+            const cotizacion = {};
+            const rows = cotizacionItemsTable.querySelectorAll('tr');
+
+            rows.forEach(row => {
+                const nombre = row.cells[1].textContent;
+                const cantidad = parseInt(row.cells[0].textContent);
+                const materialId = Object.keys(catalogoMateriales).find(key => catalogoMateriales[key].nombre === nombre);
+                cotizacion[materialId] = cantidad; 
+            });
+
+            return cotizacion;
+        }
+
+        function agregarAlCarrito(cotizacion) {
+            let carrito = JSON.parse(localStorage.getItem('carrito')) || [];
+
+            for (const materialId in cotizacion) {
+                const cantidadCotizada = cotizacion[materialId];
+                const itemExistente = carrito.find(item => item.producto.nombre === catalogoMateriales[materialId].nombre);
+
+                if (itemExistente) {
+                    itemExistente.cantidad += cantidadCotizada;
+                } else {
+                    carrito.push({
+                        producto: {
+                            nombre: catalogoMateriales[materialId].nombre,
+                            precio: catalogoMateriales[materialId].precio,
+                            imagen: '' 
+                        },
+                        cantidad: cantidadCotizada
+                    });
+                }
+            }
+
+            localStorage.setItem('carrito', JSON.stringify(carrito));
+            window.location.href = 'html/carrito.html';
+        }
+    </script>
+    
+</body>
+</html>
