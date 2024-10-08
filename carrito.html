@@ -91,9 +91,9 @@
 
         #direccion-envio {
             margin-top: 20px;
-            border: 1px solid #ccc;
-            padding: 15px;
-            border-radius: 5px;
+            border: 1px solid #ccc; /* Agregar un borde */
+            padding: 15px; /* Agregar padding */
+            border-radius: 5px; /* Agregar bordes redondeados */
         }
 
         #direccion-envio select {
@@ -102,8 +102,7 @@
             margin-bottom: 10px;
             border: 1px solid #ccc;
             border-radius: 5px;
-            appearance: none;
-            background-color: #fff;
+            background-color: #fff; /* Color de fondo blanco */
         }
 
         #nueva-direccion {
@@ -118,11 +117,14 @@
             border: 1px solid #ccc;
             border-radius: 5px;
         }
-
         #direccion-envio h3 {
-          margin-bottom: 10px; 
+            margin-bottom: 10px; /* Espacio inferior para el título */
+            margin-left: 10px;
         }
+
     </style>
+</head>
+
 <body>
 
     <header>
@@ -144,22 +146,7 @@
                         <!-- Los elementos del carrito se agregarán aquí -->
                     </ul>
 
-                    <button id="vaciar-carrito">Vaciar Carrito</button>
-                </div>
-
-                <h3>Dirección de Envío</h3>
-                <div id="direccion-envio">
-                    <select id="seleccionar-direccion">
-                        <option value="direccion-cliente">Usar dirección del cliente</option>
-                        <option value="nueva-direccion">Ingresar una nueva dirección</option>
-                    </select>
-                    <div id="nueva-direccion">
-                        <input type="text" id="calle" placeholder="Calle">
-                        <input type="text" id="numero" placeholder="Número">
-                        <input type="text" id="ciudad" placeholder="Ciudad">
-                        <input type="text" id="codigo-postal" placeholder="Código Postal">
-                    </div>
-                </div>
+                    <button id="vaciar-carrito">Vaciar Carrito</button> </div>
 
                 <div class="carrito-resumen">
                     <h3>Resumen del Pedido</h3>
@@ -167,6 +154,20 @@
                     <p>Descuento: <span id="descuento">$0.00</span></p>
                     <p>Total: <span id="total">$0.00</span></p>
                 </div>
+
+                <h3>Dirección de Envío</h3>
+                    <div id="direccion-envio">
+                        <select id="seleccionar-direccion">
+                            <option value="direccion-cliente">Dirección 1 (ejemplo)</option>
+                            <option value="nueva-direccion">Ingresar una nueva dirección</option>
+                        </select>
+                        <div id="nueva-direccion">
+                            <input type="text" id="calle" placeholder="Calle">
+                            <input type="text" id="numero" placeholder="Número">
+                            <input type="text" id="ciudad" placeholder="Ciudad">
+                            <input type="text" id="codigo-postal" placeholder="Código Postal">
+                        </div>
+                    </div>
 
                     <button id="comprar-button">Finalizar Compra</button>
                 </div>
@@ -180,11 +181,11 @@
         const descuentoSpan = document.getElementById('descuento');
         const totalSpan = document.getElementById('total');
         const comprarButton = document.getElementById('comprar-button');
-        const vaciarCarritoButton = document.getElementById('vaciar-carrito');
-        const seleccionarDireccionSelect = document.getElementById('seleccionar-direccion');
-        const nuevaDireccionDiv = document.getElementById('nueva-direccion');
+        const metodosPagoDiv = document.getElementById('metodos-pago');
 
         let carritoArray = JSON.parse(localStorage.getItem('carrito')) || [];
+        let metodoPagoSeleccionado = localStorage.getItem('metodoPago') || null;
+
         function actualizarCarrito() {
             carritoItemsList.innerHTML = '';
             let subtotal = 0;
@@ -219,65 +220,33 @@
 ;
 
         comprarButton.addEventListener('click', () => {
-            if (seleccionarDireccionSelect =! "") {
-                alert("Gracias por tu compra!");
-                localStorage.removeItem('carrito');
-                carritoArray = [];
-                actualizarCarrito();
-            } else {
-                alert('Por favor seleccione una direccion');
-            }
+            alert("Gracias por tu compra!");
+            localStorage.removeItem('carrito');
+            carritoArray = [];
+            actualizarCarrito();
         });
 
         
-        function enviarPedido() {
-            const direccion = seleccionarDireccionSelect.value;
-
-            if (direccion === 'direccion-cliente') {
-                alert('Pedido enviado a la dirección del cliente.');
-            } else if (direccion === 'nueva-direccion') {
-                const calle = document.getElementById('calle').value;
-                const numero = document.getElementById('numero').value;
-                const ciudad = document.getElementById('ciudad').value;
-                const codigoPostal = document.getElementById('codigo-postal').value;
-
-                
-                if (calle && numero && ciudad && codigoPostal) {
-                    alert(`Pedido enviado a:\n${calle} ${numero}\n${ciudad}, ${codigoPostal}\n¡Muchas Gracias por su Compra! `);
-                } else {
-                    alert('Por favor, completa todos los campos de la dirección.');
-                }
-            }
-
-            // Limpia el carrito después de enviar el pedido
-            carritoArray = [];
-            localStorage.removeItem('carrito');
-            actualizarCarrito();
-        }
-
-        
-        comprarButton.addEventListener('click', enviarPedido);
-
-        
+        const vaciarCarritoButton = document.getElementById('vaciar-carrito');
         vaciarCarritoButton.addEventListener('click', () => {
-            carritoArray = [];
-            localStorage.removeItem('carrito');
-            actualizarCarrito();
+            carritoArray = []; 
+            localStorage.removeItem('carrito'); 
+            actualizarCarrito(); 
         });
 
-        
+        actualizarCarrito();
+
+        const seleccionarDireccionSelect = document.getElementById('seleccionar-direccion');
+        const nuevaDireccionDiv = document.getElementById('nueva-direccion');
+
         seleccionarDireccionSelect.addEventListener('change', () => {
             if (seleccionarDireccionSelect.value === 'nueva-direccion') {
-                nuevaDireccionDiv.style.display = 'block';
+                nuevaDireccionDiv.style.display = 'block'; 
             } else {
                 nuevaDireccionDiv.style.display = 'none';
             }
         });
 
-        
-        actualizarCarrito();
-
-    </script>
     </script>
 
     
