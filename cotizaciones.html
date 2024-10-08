@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ConstruMateriales - Cotizaciones</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="/styles/style.css">
+    
     <style>
         /* Estilos generales */
         body {
@@ -96,6 +97,31 @@
         button:hover {
           background-color: #2980b9;
         }
+
+        /* Estilos para el header */
+        header {
+            background-color: #3498db; /* Color de fondo azul */
+            color: #fff; /* Color del texto blanco */
+            padding: 1em 0; /* Padding superior e inferior */
+            text-align: center; /* Texto centrado */
+        }
+
+        /* Estilos para el botón "Volver" */
+        button[onclick="history.back()"] {
+          background-color: #2980b9; /* Color azul más intenso */
+          color: white;
+          padding: 12px 25px; /* Padding un poco más grande */
+          border: none;
+          border-radius: 8px; /* Bordes más redondeados */
+          cursor: pointer;
+          font-weight: bold; 
+          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Sombra más pronunciada */
+          transition: background-color 0.3s ease; 
+        }
+
+        button[onclick="history.back()"]:hover {
+          background-color: #21618C; /* Color azul aún más oscuro al pasar el mouse */
+        }
       </style>
 </head>
 <body>
@@ -112,20 +138,24 @@
             <h2>Cotizador de Materiales</h2>
             <div class="cotizador-form">
                 <div class="form-group">
-                    <label for="metros-cuadrados">Metros cuadrados:</label>
-                    <input type="number" id="metros-cuadrados" min="1" required>
+                    <label for="alto">Alto (metros):</label>
+                    <input type="number" id="alto" min="1" required>
+                </div>
+                <div class="form-group">
+                    <label for="ancho">Ancho (metros):</label>
+                    <input type="number" id="ancho" min="1" required>
                 </div>
                 <fieldset class="form-group">
                     <legend>Materiales:</legend>
                     <div id="materiales-checkbox">
                         <!-- Los checkboxes de materiales se agregarán aquí -->
                     </div>
-                    <h2>Luego se colocarán más materiales en la lista</h2>
                 </fieldset>
                 <button id="calcular-cotizacion">Calcular Cotización</button>
             </div>
             <div class="cotizacion hidden" id="cotizacion-resultado">
                 <h3>Cotización</h3>
+                <p>Metros cuadrados: <span id="metros-cuadrados-resultado"></span></p> <div class="cotizacion hidden" id="cotizacion-resultado">
                 <table>
                     <thead>
                         <tr>
@@ -145,7 +175,10 @@
     </main>
 
     <script>
-        const metrosCuadradosInput = document.getElementById('metros-cuadrados');
+        const altoInput = document.getElementById('alto');
+        const anchoInput = document.getElementById('ancho');
+        const metrosCuadradosInput = document.getElementById('metros-cuadrados'); 
+        const metrosCuadradosResultadoSpan = document.getElementById('metros-cuadrados-resultado'); 
         const materialesCheckboxDiv = document.getElementById('materiales-checkbox');
         const calcularButton = document.getElementById('calcular-cotizacion');
         const cotizacionResultadoDiv = document.getElementById('cotizacion-resultado');
@@ -162,13 +195,13 @@
             'viga-4m': {
                 nombre: "Viga de 4 metros",
                 precio: 10619,
-                cantidadPorPallet: 1, 
-                cantidadPorMetroCuadrado: 0.25 
+                cantidadPorPallet: 1,
+                cantidadPorMetroCuadrado: 0.25 // Asumiendo 1 viga cada 4 m2
             },
-            
+            // Agrega más materiales aquí...
         };
 
-        
+        // Generar checkboxes de materiales
         for (const materialId in catalogoMateriales) {
             const material = catalogoMateriales[materialId];
             const checkboxDiv = document.createElement('div');
@@ -180,7 +213,11 @@
         }
 
         calcularButton.addEventListener('click', () => {
-            const metrosCuadrados = parseFloat(metrosCuadradosInput.value);
+            const alto = parseFloat(altoInput.value);
+            const ancho = parseFloat(anchoInput.value);
+            const metrosCuadrados = alto * ancho;
+            metrosCuadradosResultadoSpan.textContent = metrosCuadrados; 
+
             const materialesSeleccionados = Array.from(document.querySelectorAll('#materiales-checkbox input:checked'))
                 .map(checkbox => checkbox.value);
 
@@ -211,7 +248,7 @@
         }
 
         function mostrarCotizacion(cotizacion) {
-            cotizacionItemsTable.innerHTML = ''; 
+            cotizacionItemsTable.innerHTML = '';
 
             for (const materialId in cotizacion) {
                 const { cantidad, pallets, precioTotal } = cotizacion[materialId];
@@ -225,7 +262,7 @@
 
                 cantidadCell.textContent = cantidad;
                 nombreCell.textContent = material.nombre;
-                palletsCell.textContent = pallets; 
+                palletsCell.textContent = pallets;
                 precioCell.textContent = `$${precioTotal.toFixed(2)}`;
             }
 
@@ -247,10 +284,13 @@
         }
 
         function agregarAlCarrito(cotizacion) {
+            // Recupera el carrito actual del localStorage
             let carrito = JSON.parse(localStorage.getItem('carrito')) || [];
 
+            // Actualiza las cantidades en el carrito
             for (const materialId in cotizacion) {
                 const cantidadCotizada = cotizacion[materialId];
+
                 const itemExistente = carrito.find(item => item.producto.nombre === catalogoMateriales[materialId].nombre);
 
                 if (itemExistente) {
@@ -267,10 +307,12 @@
                 }
             }
 
+            // Guarda el carrito actualizado en localStorage
             localStorage.setItem('carrito', JSON.stringify(carrito));
+
+            // Redirige al usuario a la página del carrito
             window.location.href = "carrito.html";
         }
     </script>
-    
 </body>
 </html>
