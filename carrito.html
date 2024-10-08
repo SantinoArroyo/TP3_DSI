@@ -181,10 +181,8 @@
         const descuentoSpan = document.getElementById('descuento');
         const totalSpan = document.getElementById('total');
         const comprarButton = document.getElementById('comprar-button');
-        const metodosPagoDiv = document.getElementById('metodos-pago');
 
         let carritoArray = JSON.parse(localStorage.getItem('carrito')) || [];
-        let metodoPagoSeleccionado = localStorage.getItem('metodoPago') || null;
 
         function actualizarCarrito() {
             carritoItemsList.innerHTML = '';
@@ -220,14 +218,7 @@
 ;
 
         comprarButton.addEventListener('click', () => {
-            if (metodoPagoSeleccionado) {
-                alert("Gracias por tu compra!");
-                localStorage.removeItem('carrito');
-                carritoArray = [];
-                actualizarCarrito();
-            } else {
-                alert('Por favor selecciona un método de pago');
-            }
+            alert("Gracias por tu compra!");
         });
 
         
