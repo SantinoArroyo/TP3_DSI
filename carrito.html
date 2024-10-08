@@ -218,7 +218,14 @@
 ;
 
         comprarButton.addEventListener('click', () => {
-            alert("Gracias por tu compra!");
+            if (seleccionarDireccionSelect == "") {
+                alert("Gracias por tu compra!");
+                localStorage.removeItem('carrito');
+                carritoArray = [];
+                actualizarCarrito();
+            } else {
+                alert('Por favor seleccione una direccion');
+            }
         });
 
         
