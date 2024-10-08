@@ -24,13 +24,15 @@
         }
 
         .carrito-items,
-        .carrito-resumen {
+        .carrito-resumen,
+        #envio { /* Agregar #envio a los estilos */
             background-color: #fff;
             padding: 20px;
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            width: 10%;
+            width: 30%; /* Ajustar el ancho según sea necesario */
             align-items: center;
+            margin-bottom: 20px; 
         }
 
         .metodo-pago label {
@@ -122,6 +124,32 @@
             margin-left: 10px;
         }
 
+        /* Estilos para la selección de envío */
+        #envio {
+            margin-top: 20px;
+            border: 1px solid #ccc;
+            padding: 15px;
+            border-radius: 5px;
+        }
+
+        #envio select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            appearance: none;
+            background-color: #fff;
+        }
+
+        .carrito-content > * { /* Selecciona los hijos directos de carrito-content */
+            margin-right: 20px; 
+        }
+
+        .carrito-content > *:last-child { /* Elimina el margen del último elemento */
+            margin-right: 0; 
+        }
+
     </style>
 </head>
 
@@ -147,14 +175,7 @@
                     </ul>
 
                     <button id="vaciar-carrito">Vaciar Carrito</button> </div>
-
-                <div class="carrito-resumen">
-                    <h3>Resumen del Pedido</h3>
-                    <p>Subtotal: <span id="subtotal">$0.00</span></p>
-                    <p>Descuento: <span id="descuento">$0.00</span></p>
-                    <p>Total: <span id="total">$0.00</span></p>
-                </div>
-
+                
                 <h3>Dirección de Envío</h3>
                     <div id="direccion-envio">
                         <select id="seleccionar-direccion">
@@ -168,6 +189,20 @@
                             <input type="text" id="codigo-postal" placeholder="Código Postal">
                         </div>
                     </div>
+
+                    <h3>Empresa de Envío</h3>
+                    <div id="envio">
+                        <select id="seleccionar-envio">
+                            <option value="">Selecciona una empresa de envío</option>
+                        </select>
+                    </div>
+
+                <div class="carrito-resumen">
+                    <h3>Resumen del Pedido</h3>
+                    <p>Subtotal: <span id="subtotal">$0.00</span></p>
+                    <p>Descuento: <span id="descuento">$0.00</span></p>
+                    <p>Total: <span id="total">$0.00</span></p>
+                </div>
 
                     <button id="comprar-button">Finalizar Compra</button>
                 </div>
@@ -245,6 +280,22 @@
             } else {
                 nuevaDireccionDiv.style.display = 'none';
             }
+        });
+
+        // Datos de empresas de envío
+        const empresasEnvio = [
+            { id: 1, nombre: "Correo Argentino" },
+            { id: 2, nombre: "Andreani" },
+            { id: 3, nombre: "OCA" }
+        ];
+
+        // Agregar opciones al select de empresas de envío
+        const seleccionarEnvioSelect = document.getElementById('seleccionar-envio');
+        empresasEnvio.forEach(empresa => {
+            const option = document.createElement('option');
+            option.value = empresa.id;
+            option.text = empresa.nombre;
+            seleccionarEnvioSelect.add(option);
         });
 
     </script>
