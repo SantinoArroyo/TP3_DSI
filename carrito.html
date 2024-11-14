@@ -547,8 +547,8 @@
             const total = parseFloat(totalSpan.textContent.replace('$', ''));
             let puntosActuales = parseInt(localStorage.getItem('puntos')) || 0;
             
-            // Calcular puntos nuevos (1000 puntos por cada $100,000)
-            const puntosCabrantes = Math.floor(total / 100000) * 1000;
+            // Calcular puntos nuevos (1 punto por cada $100)
+            const puntosCabrantes = Math.floor(total / 100);
             const nuevosPuntos = puntosActuales + puntosCabrantes;
             
             localStorage.setItem('puntos', nuevosPuntos);
