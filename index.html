@@ -9,6 +9,91 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
         integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        /* Media queries para smartphones */
+        @media (max-width: 600px) {
+            .container {
+                max-width: 100%;
+                margin: 10px;
+                padding: 10px;
+            }
+
+            h2,
+            h3 {
+                font-size: 1.5em;
+            }
+
+            .form-group {
+                margin-bottom: 10px;
+            }
+
+            label {
+                font-size: 1em;
+            }
+
+            input[type="number"],
+            select {
+                padding: 6px;
+            }
+
+            .cotizacion table {
+                font-size: 0.9em;
+            }
+
+            button {
+                padding: 8px 12px;
+            }
+
+            /* Barra de navegación */
+            nav ul {
+                display: flex;
+                flex-direction: column;
+                padding: 0;
+            }
+
+            nav li {
+                display: block;
+                margin: 10px 0;
+            }
+
+            nav a {
+                font-size: 1.2em;
+            }
+
+            /* Carrito */
+            aside {
+                width: 100%;
+                position: static;
+                margin-top: 20px;
+            }
+
+            .carrito-content {
+                flex-direction: column;
+            }
+
+            .carrito-items,
+            .carrito-resumen,
+            #envio {
+                width: 100%;
+                margin-bottom: 20px;
+            }
+
+            .carrito-item {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .carrito-item img {
+                width: 100%;
+                height: auto;
+                margin-bottom: 10px;
+            }
+
+            .carrito-item-info {
+                width: 100%;
+            }
+        }
+    </style>
 </head>
 
 <body>

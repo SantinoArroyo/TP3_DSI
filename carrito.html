@@ -150,6 +150,101 @@
             margin-right: 0; 
         }
 
+        /* Media queries para smartphones */
+        @media (max-width: 600px) {
+            .container {
+                max-width: 100%;
+                margin: 10px;
+                padding: 10px;
+            }
+
+            h2,
+            h3 {
+                font-size: 1.5em;
+            }
+
+            .form-group {
+                margin-bottom: 10px;
+            }
+
+            label {
+                font-size: 1em;
+            }
+
+            input[type="number"],
+            select {
+                padding: 6px;
+            }
+
+            .cotizacion table {
+                font-size: 0.9em;
+            }
+
+            button {
+                padding: 8px 12px;
+            }
+
+            /* Barra de navegación */
+            nav ul {
+                display: flex;
+                flex-direction: column;
+                padding: 0;
+            }
+
+            nav li {
+                display: block;
+                margin: 10px 0;
+            }
+
+            nav a {
+                font-size: 1.2em;
+            }
+
+            /* Carrito */
+            aside {
+                width: 100%;
+                position: static;
+                margin-top: 20px;
+            }
+
+            .carrito-content {
+                display: flex;
+                flex-direction: column;
+            }
+
+            .carrito-items,
+            .carrito-resumen,
+            #envio {
+                width: 100%;
+                margin-bottom: 20px;
+            }
+
+            .carrito-item {
+                display: flex;
+                flex-direction: column;
+                align-items: flex-start;
+                margin-bottom: 20px;
+            }
+
+            .carrito-item img {
+                width: 100%;
+                height: auto;
+                margin-bottom: 10px;
+            }
+
+            .carrito-item-info {
+                width: 100%;
+            }
+
+            .carrito-item-info p {
+                margin: 5px 0;
+            }
+
+            .carrito-item-info .precio,
+            .carrito-item-info .cantidad {
+                font-size: 1em;
+            }
+        }
     </style>
 </head>
 
