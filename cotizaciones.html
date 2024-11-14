@@ -1,129 +1,143 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ConstruMateriales - Cotizaciones</title>
     <link rel="stylesheet" href="/styles/style.css">
-    
+
     <style>
         /* Estilos generales */
         body {
-          font-family: sans-serif;
-          margin: 0;
-          padding: 0;
-          background-color: #f4f4f4;
-          color: #333;
+            font-family: sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
         }
-        
+
         .container {
-          max-width: 800px;
-          margin: 20px auto;
-          padding: 20px;
-          background-color: #fff;
-          border-radius: 5px;
-          box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         }
-        
-        h2, h3 {
-          color: #3498db; 
+
+        h2,
+        h3 {
+            color: #3498db;
         }
-        
+
         /* Estilos para el formulario */
         .cotizador-form {
-          margin-bottom: 20px;
+            margin-bottom: 20px;
         }
-        
+
         .form-group {
-          margin-bottom: 15px;
+            margin-bottom: 15px;
         }
-        
+
         label {
-          display: block;
-          margin-bottom: 5px;
+            display: block;
+            margin-bottom: 5px;
         }
-        
-        input[type="number"], 
+
+        input[type="number"],
         select {
-          width: 100%;
-          padding: 8px;
-          border: 1px solid #ccc;
-          border-radius: 3px;
-          box-sizing: border-box;
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            box-sizing: border-box;
         }
-        
+
         /* Estilos para la lista desplegable de materiales */
         #materiales {
-          width: 100%; 
-          padding: 8px;
-          border: 1px solid #ccc;
-          border-radius: 3px;
-          box-sizing: border-box;
-          appearance: none; /* Personaliza la apariencia del select */
-          background-color: #fff; 
-          overflow-y: auto; 
-          height: 100px; 
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            box-sizing: border-box;
+            appearance: none;
+            /* Personaliza la apariencia del select */
+            background-color: #fff;
+            overflow-y: auto;
+            height: 100px;
         }
-        
+
         /* Estilos para la tabla de cotizaciones */
         .cotizacion table {
-          width: 100%;
-          border-collapse: collapse; 
-          margin-bottom: 20px;
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
         }
-        
-        .cotizacion th, .cotizacion td {
-          text-align: left;
-          padding: 8px;
-          border-bottom: 1px solid #eee; 
+
+        .cotizacion th,
+        .cotizacion td {
+            text-align: left;
+            padding: 8px;
+            border-bottom: 1px solid #eee;
         }
-        
+
         .cotizacion th {
-          background-color: #f0f0f0; 
-          font-weight: bold;
+            background-color: #f0f0f0;
+            font-weight: bold;
         }
-        
+
         /* Estilos para los botones */
         button {
-          background-color: #3498db;
-          color: #fff;
-          border: none;
-          padding: 10px 15px;
-          border-radius: 3px;
-          cursor: pointer;
-          transition: background-color 0.3s ease;
+            background-color: #3498db;
+            color: #fff;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 3px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
         }
-        
+
         button:hover {
-          background-color: #2980b9;
+            background-color: #2980b9;
         }
 
         /* Estilos para el header */
         header {
-            background-color: #3498db; /* Color de fondo azul */
-            color: #fff; /* Color del texto blanco */
-            padding: 1em 0; /* Padding superior e inferior */
-            text-align: center; /* Texto centrado */
+            background-color: #3498db;
+            /* Color de fondo azul */
+            color: #fff;
+            /* Color del texto blanco */
+            padding: 1em 0;
+            /* Padding superior e inferior */
+            text-align: center;
+            /* Texto centrado */
         }
 
         /* Estilos para el botón "Volver" */
         button[onclick="history.back()"] {
-          background-color: #2980b9; /* Color azul más intenso */
-          color: white;
-          padding: 12px 25px; /* Padding un poco más grande */
-          border: none;
-          border-radius: 8px; /* Bordes más redondeados */
-          cursor: pointer;
-          font-weight: bold; 
-          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Sombra más pronunciada */
-          transition: background-color 0.3s ease; 
+            background-color: #2980b9;
+            /* Color azul más intenso */
+            color: white;
+            padding: 12px 25px;
+            /* Padding un poco más grande */
+            border: none;
+            border-radius: 8px;
+            /* Bordes más redondeados */
+            cursor: pointer;
+            font-weight: bold;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            /* Sombra más pronunciada */
+            transition: background-color 0.3s ease;
         }
 
         button[onclick="history.back()"]:hover {
-          background-color: #21618C; /* Color azul aún más oscuro al pasar el mouse */
+            background-color: #21618C;
+            /* Color azul aún más oscuro al pasar el mouse */
         }
-      </style>
+    </style>
 </head>
+
 <body>
     <header>
         <div class="header-content">
@@ -155,30 +169,31 @@
             </div>
             <div class="cotizacion hidden" id="cotizacion-resultado">
                 <h3>Cotización</h3>
-                <p>Metros cuadrados: <span id="metros-cuadrados-resultado"></span></p> <div class="cotizacion hidden" id="cotizacion-resultado">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Cantidad</th>
-                            <th>Nombre del artículo</th>
-                            <th>Pallets</th>
-                            <th>Precio total</th>
-                        </tr>
-                    </thead>
-                    <tbody id="cotizacion-items">
-                        <!-- Aquí se listarán los materiales y cantidades -->
-                    </tbody>
-                </table>
-                <button id="agregar-al-carrito">Agregar al Carrito</button>
+                <p>Metros cuadrados: <span id="metros-cuadrados-resultado"></span></p>
+                <div class="cotizacion hidden" id="cotizacion-resultado">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Cantidad</th>
+                                <th>Nombre del artículo</th>
+                                <th>Pallets</th>
+                                <th>Precio total</th>
+                            </tr>
+                        </thead>
+                        <tbody id="cotizacion-items">
+                            <!-- Aquí se listarán los materiales y cantidades -->
+                        </tbody>
+                    </table>
+                    <button id="agregar-al-carrito">Agregar al Carrito</button>
+                </div>
             </div>
-        </div>
     </main>
 
     <script>
         const altoInput = document.getElementById('alto');
         const anchoInput = document.getElementById('ancho');
-        const metrosCuadradosInput = document.getElementById('metros-cuadrados'); 
-        const metrosCuadradosResultadoSpan = document.getElementById('metros-cuadrados-resultado'); 
+        const metrosCuadradosInput = document.getElementById('metros-cuadrados');
+        const metrosCuadradosResultadoSpan = document.getElementById('metros-cuadrados-resultado');
         const materialesCheckboxDiv = document.getElementById('materiales-checkbox');
         const calcularButton = document.getElementById('calcular-cotizacion');
         const cotizacionResultadoDiv = document.getElementById('cotizacion-resultado');
@@ -216,9 +231,10 @@
             const alto = parseFloat(altoInput.value);
             const ancho = parseFloat(anchoInput.value);
             const metrosCuadrados = alto * ancho;
-            metrosCuadradosResultadoSpan.textContent = metrosCuadrados; 
+            metrosCuadradosResultadoSpan.textContent = metrosCuadrados;
 
-            const materialesSeleccionados = Array.from(document.querySelectorAll('#materiales-checkbox input:checked'))
+            const materialesSeleccionados = Array.from(document.querySelectorAll(
+                    '#materiales-checkbox input:checked'))
                 .map(checkbox => checkbox.value);
 
             const cotizacion = calcularMateriales(metrosCuadrados, materialesSeleccionados);
@@ -251,7 +267,11 @@
             cotizacionItemsTable.innerHTML = '';
 
             for (const materialId in cotizacion) {
-                const { cantidad, pallets, precioTotal } = cotizacion[materialId];
+                const {
+                    cantidad,
+                    pallets,
+                    precioTotal
+                } = cotizacion[materialId];
                 const material = catalogoMateriales[materialId];
 
                 const row = cotizacionItemsTable.insertRow();
@@ -276,8 +296,9 @@
             rows.forEach(row => {
                 const nombre = row.cells[1].textContent;
                 const cantidad = parseInt(row.cells[0].textContent);
-                const materialId = Object.keys(catalogoMateriales).find(key => catalogoMateriales[key].nombre === nombre);
-                cotizacion[materialId] = cantidad; 
+                const materialId = Object.keys(catalogoMateriales).find(key => catalogoMateriales[key]
+                    .nombre === nombre);
+                cotizacion[materialId] = cantidad;
             });
 
             return cotizacion;
@@ -291,7 +312,8 @@
             for (const materialId in cotizacion) {
                 const cantidadCotizada = cotizacion[materialId];
 
-                const itemExistente = carrito.find(item => item.producto.nombre === catalogoMateriales[materialId].nombre);
+                const itemExistente = carrito.find(item => item.producto.nombre === catalogoMateriales[materialId]
+                    .nombre);
 
                 if (itemExistente) {
                     itemExistente.cantidad += cantidadCotizada;
@@ -300,7 +322,7 @@
                         producto: {
                             nombre: catalogoMateriales[materialId].nombre,
                             precio: catalogoMateriales[materialId].precio,
-                            imagen: '' 
+                            imagen: ''
                         },
                         cantidad: cantidadCotizada
                     });
@@ -315,4 +337,5 @@
         }
     </script>
 </body>
+
 </html>
