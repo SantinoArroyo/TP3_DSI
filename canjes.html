@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ConstruMateriales - Canjes de Puntos</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .puntos-container {
+            background-color: #3498db;
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .puntos-disponibles {
+            font-size: 2em;
+            font-weight: bold;
+        }
+
+        .premios-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            padding: 20px;
+        }
+
+        .premio-card {
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .premio-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .premio-puntos {
+            color: #3498db;
+            font-weight: bold;
+            font-size: 1.2em;
+            margin: 10px 0;
+        }
+
+        .canjear-btn {
+            background-color: #2ecc71;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+            transition: background-color 0.3s ease;
+        }
+
+        .canjear-btn:hover {
+            background-color: #27ae60;
+        }
+
+        .canjear-btn:disabled {
+            background-color: #bdc3c7;
+            cursor: not-allowed;
+        }
+
+        @media (max-width: 600px) {
+            .premios-container {
+                grid-template-columns: 1fr;
+            }
+
+            .premio-card {
+                margin: 10px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="header-content">
+            <i class="fas fa-tools"></i>
+            <h1>ConstruMateriales</h1>
+            <p>Sistema de Canjes</p>
+        </div>
+    </header>
+
+    <nav>
+        <ul>
+            <li><a href="index.html"><i class="fas fa-home"></i> Inicio</a></li>
+            <li><a href="inicio.html"><i class="fas fa-user-plus"></i> Inicio de Sesión</a></li>
+            <li><a href="cotizaciones.html"><i class="fas fa-file-invoice-dollar"></i> Cotizaciones</a></li>
+            <li><a href="carrito.html"><i class="fas fa-shopping-cart"></i> Carrito</a></li>
+        </ul>
+    </nav>
+
+    <main class="container">
+        <div class="puntos-container">
+            <h2>Tus Puntos</h2>
+            <div class="puntos-disponibles" id="puntos-display">0</div>
+            <p>Puntos disponibles</p>
+        </div>
+
+        <div class="premios-container" id="premios-list">
+            <!-- Los premios se cargarán dinámicamente -->
+        </div>
+    </main>
+
+    <script>
+        // Obtener puntos del localStorage
+        const puntosActuales = parseInt(localStorage.getItem('puntos')) || 0;
+        document.getElementById('puntos-display').textContent = puntosActuales;
+
+        // Lista de premios disponibles
+        const premios = [
+            {
+                nombre: "15% de descuento en tu próxima compra",
+                puntos: 2000,
+                descripcion: "Válido para cualquier producto de construcción"
+            },
+            {
+                nombre: "Vale 30% Nike",
+                puntos: 3500,
+                descripcion: "Descuento en calzado deportivo Nike"
+            },
+            {
+                nombre: "2x1 en Cinemark",
+                puntos: 1500,
+                descripcion: "Válido para cualquier función 2D"
+            },
+            {
+                nombre: "Vale $5000 Deportes Market",
+                puntos: 2500,
+                descripcion: "Para usar en cualquier artículo deportivo"
+            },
+            {
+                nombre: "50% de descuento en ferretería",
+                puntos: 4000,
+                descripcion: "Válido en herramientas seleccionadas"
+            },
+            {
+                nombre: "Vale $10000 en Supermercados",
+                puntos: 5000,
+                descripcion: "Válido en cadenas seleccionadas"
+            }
+        ];
+
+        // Función para mostrar los premios
+        function mostrarPremios() {
+            const premiosContainer = document.getElementById('premios-list');
+            premiosContainer.innerHTML = '';
+
+            premios.forEach(premio => {
+                const premioCard = document.createElement('div');
+                premioCard.classList.add('premio-card');
+                
+                premioCard.innerHTML = `
+                    <h3>${premio.nombre}</h3>
+                    <p class="premio-puntos">${premio.puntos} puntos</p>
+                    <p>${premio.descripcion}</p>
+                    <button 
+                        class="canjear-btn" 
+                        onclick="canjearPremio(${premio.puntos})"
+                        ${puntosActuales < premio.puntos ? 'disabled' : ''}>
+                        Canjear Premio
+                    </button>
+                `;
+                
+                premiosContainer.appendChild(premioCard);
+            });
+        }
+
+        // Función para canjear premios
+        function canjearPremio(puntosPremio) {
+            if (puntosActuales >= puntosPremio) {
+                const nuevosPuntos = puntosActuales - puntosPremio;
+                localStorage.setItem('puntos', nuevosPuntos);
+                alert('¡Premio canjeado con éxito!');
+                location.reload();
+            } else {
+                alert('No tienes suficientes puntos para este premio');
+            }
+        }
+
+        // Inicializar la vista
+        mostrarPremios();
+    </script>
+</body>
+</html>

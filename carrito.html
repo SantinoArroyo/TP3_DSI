@@ -544,7 +544,20 @@
 ;
 
         comprarButton.addEventListener('click', () => {
-            alert("Gracias por tu compra!");
+            const total = parseFloat(totalSpan.textContent.replace('$', ''));
+            let puntosActuales = parseInt(localStorage.getItem('puntos')) || 0;
+            
+            // Calcular puntos nuevos (1000 puntos por cada $100,000)
+            const puntosCabrantes = Math.floor(total / 100000) * 1000;
+            const nuevosPuntos = puntosActuales + puntosCabrantes;
+            
+            localStorage.setItem('puntos', nuevosPuntos);
+            
+            if (puntosCabrantes > 0) {
+                alert(`¡Felicidades! Has ganado ${puntosCabrantes} puntos. Total de puntos: ${nuevosPuntos}`);
+            }
+            
+            alert("¡Gracias por tu compra!");
             localStorage.removeItem('carrito');
             carritoArray = [];
             actualizarCarrito();
