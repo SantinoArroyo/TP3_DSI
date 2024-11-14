@@ -245,6 +245,149 @@
                 font-size: 1em;
             }
         }
+
+        /* Media queries para smartphones en orientación vertical */
+        @media (max-width: 600px) {
+            /* Ajustes generales */
+            .container {
+                max-width: 100%;
+                margin: 10px;
+                padding: 10px;
+                overflow-x: hidden;
+            }
+
+            /* Header */
+            header {
+                padding: 2em 0;
+            }
+
+            header h1 {
+                font-size: 2em;
+            }
+
+            header p {
+                font-size: 1.2em;
+            }
+
+            /* Navegación */
+            nav ul {
+                display: flex;
+                flex-direction: column;
+                padding: 15px;
+                gap: 15px;
+            }
+
+            nav li {
+                display: block;
+                margin: 0;
+                width: 100%;
+                text-align: center;
+            }
+
+            nav a {
+                display: block;
+                padding: 10px;
+                font-size: 1.1em;
+                background-color: #f8f8f8;
+                border-radius: 5px;
+            }
+
+            /* Productos */
+            .product-container {
+                display: flex;
+                flex-direction: column;
+            }
+
+            .product {
+                width: 100%;
+                margin-bottom: 15px;
+            }
+
+            /* Carrito */
+            .carrito-content {
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            .carrito-items,
+            .carrito-resumen,
+            #envio {
+                width: 100%;
+                margin: 0 0 20px 0;
+            }
+
+            #direccion-envio,
+            #envio,
+            .carrito-resumen {
+                width: 100%;
+                box-sizing: border-box;
+                margin-bottom: 20px;
+            }
+
+            .carrito-item {
+                flex-direction: column;
+            }
+
+            .carrito-item img {
+                width: 100%;
+                max-width: 200px;
+                height: auto;
+                margin: 0 auto 10px;
+            }
+
+            .carrito-item-info {
+                width: 100%;
+                text-align: center;
+            }
+
+            /* Formularios */
+            input[type="text"],
+            input[type="email"],
+            input[type="password"],
+            input[type="number"],
+            select {
+                width: 100%;
+                padding: 12px;
+                margin: 5px 0;
+                font-size: 16px; /* Mejor tamaño para móviles */
+            }
+
+            /* Botones */
+            button {
+                width: 100%;
+                padding: 12px;
+                margin: 5px 0;
+                font-size: 16px;
+            }
+
+            /* Aside (carrito flotante) */
+            aside {
+                position: fixed;
+                top: auto;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                width: 100%;
+                max-height: 60vh;
+                overflow-y: auto;
+                z-index: 1000;
+                border-radius: 15px 15px 0 0;
+            }
+
+            /* Search y filtros */
+            .search-filter {
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
+                padding: 10px;
+            }
+
+            .search-filter input,
+            .search-filter select {
+                width: 100%;
+                margin: 0;
+            }
+        }
     </style>
 </head>
 
